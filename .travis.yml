@@ -1,0 +1,10 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t oyelowo/docker-with-react -f Dockerfile.dev  .
+
+script:
+    - script:
+  - docker run -e CI=true oyelowo/docker-with-react npm run test
