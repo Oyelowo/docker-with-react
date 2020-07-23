@@ -1,11 +1,18 @@
-sudo: required
-services:
+sudo: required # anytime we are using docker, we need superuser level permissions
+language: generic
+services: 
+# pre-installing docker cli. travis installs this
     - docker
 
+# steps to execute before our tests are run
 before_install:
+# not compulsory to use the name - `oyelowo/docker-with-react` but it is a convention(docker-username/github-repository)
     - docker build -t oyelowo/docker-with-react -f Dockerfile.dev  .
 
+# contains all scripts necessary to run our test suites. if it receives any status other than 0, it means our test is broke
 script:
+# default `npm run test` command hangs the test after running, hence we add `-- --coverage`to 
+# get around this and thus make the test exit with a status code
     - docker run -e CI=true oyelowo/docker-with-react npm run test -- --coverage
 
 deploy:
