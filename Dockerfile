@@ -1,8 +1,8 @@
-FROM node:alpine as builder
+FROM node:alpine
 
 WORKDIR /app
 
-COPY package.json .
+COPY package*.json ./
 
 RUN npm install
 
@@ -17,5 +17,6 @@ FROM nginx
 # otherwise, things wont work when we deploy our app because 
 # we always need to give docker info about port mapping i.e something like
 # docker run -p <port from outside>:<port in our container> (e.g docker run -p elasticBS-PORT:80)
+# NB: nginx uses port 80 by default for our prod app
 EXPOSE 80
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=0 /app/build /usr/share/nginx/html
