@@ -9,20 +9,22 @@ before_install:
 # not compulsory to use the name - `oyelowo/docker-with-react` but it is a convention(docker-username/github-repository)
     - docker build -t oyelowo/docker-with-react -f Dockerfile.dev  .
 
-# contains all scripts necessary to run our test suites. if it receives any status other than 0, it means our test is broke
+# contains all scripts necessary to run our test suites. if it receives any status other than 0(successful), it means our test is broken
 script:
 # default `npm run test` command hangs the test after running, hence we add `-- --coverage`to 
 # get around this and thus make the test exit with a status code
     - docker run -e CI=true oyelowo/docker-with-react npm run test -- --coverage
 
+
+# Deploying to aws from travis
 deploy:
     edge: true
     provider: elasticbeanstalk
-    region: "us-east-2"
-    app: "docker-with-react"
-    env: "DockerWithReact-env"
-    bucket_name: "elasticbeanstalk-us-east-2-150627575501"
-    bucket_path: "docker-with-react"
+    region: "us-east-1"
+    app: "docker-with-react2"
+    env: "DockerWithReact2-env"
+    bucket_name: "elasticbeanstalk-us-east-1-150627575501"
+    bucket_path: "docker-with-react2" #by default, aws won't create a path until the first deploy, hence, we use the app name here also
     on:
         branch: master
     access_key_id: $AWS_ACCESS_KEY
