@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:alpine as builder
 
 WORKDIR /app
 
@@ -19,4 +19,4 @@ FROM nginx
 # docker run -p <port from outside>:<port in our container> (e.g docker run -p elasticBS-PORT:80)
 # NB: nginx uses port 80 by default for our prod app
 EXPOSE 80
-COPY --from=0 /app/build /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html
